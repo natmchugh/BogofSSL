@@ -1,7 +1,7 @@
 <html>
 
     <h1>BOGOF SSL</h1>
-    <h2>Buy One Get One Free!</h2>
+    <h2>Buy One, Get One Free!</h2>
     <p>
     Our certificates are 99.9%<super>&#42;</super> untrusted by all major (and minor) browsers.
     </p>
