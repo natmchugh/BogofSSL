@@ -1,6 +1,23 @@
 {
+    "name": "BogofSSL",
+    "description": "The Worst Certificate Authority Ever",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nathaniel McHugh",
+            "homepage": "http://www.fishtrap.co.uk",
+            "role": "Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.zendframework.com/"
+        }
+    ],
     "require": {
-        "slim/slim": "~2.5"
+        "slim/slim": "~2.5",
+        "zendframework/zend-config": "2.3.*"
     },
     "autoload": {
         "psr-0": {

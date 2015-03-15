@@ -3,6 +3,19 @@ require '../vendor/autoload.php';
 
 use BogofSSL\Model\CSR;
 
+// $configPaths = sprintf(
+//     '%s/config/{,*.}{global,%s,local}.php', 
+//     APPLICATION_PATH,
+//     SLIM_MODE
+// );
+
+// $configPaths = sprintf(
+//     '%s/config/{,*.}{global,%s,local}.php', 
+//     APPLICATION_PATH,
+//     SLIM_MODE
+// );
+// $config = Zend\Config\Factory::fromFiles(glob($configPaths, GLOB_BRACE));
+
 $app = new \Slim\Slim();
 $app->add(new \Slim\Middleware\SessionCookie());
 $app->config(array(
@@ -10,17 +23,26 @@ $app->config(array(
     'templates.path' => '../templates'
 ));
 
+// $config = Zend\Config\Factory::fromFiles(glob($configPaths, GLOB_BRACE));
+
 $app->get('/', function () use ($app) {
     $app->render('csr_form.php');
 });
 
+$caArgs = [
+    'digest_alg' => 'md5',
+    'private_key_type' => OPENSSL_KEYTYPE_RSA,
+    'encrypt_key' => false,
+];
 
-$app->post('/csr_info', function () use ($app) {
+$iaKey = 'file://'.__DIR__.'/../certificates/ia.key';
+$iaCert = 'file://'.__DIR__.'/../certificates/ia.crt';
 
-    $subject = $key = null;
-    $csr = new CSR();
+$app->post('/csr_info', function () use ($app, $iaKey, $iaCert) {
+
     $csrData = $app->request->post('csr');
-    $csr->extractCSRInfo($csrData);
+    $csr = new CSR($csrData, $iaKey, $iaCert);
+    $csr->extractCSRInfo();
     $csrInfo = $csr->getCSRRawInfo();
     $digest = $csr->extractDigest($csrInfo);
 
@@ -29,9 +51,18 @@ $app->post('/csr_info', function () use ($app) {
         return;
     }
 
-    $subject = $csr->getSubject($csrData);
-    $key = $csr->getPublicKey($csrData);
-    $app->render('csr_info.php', ['subject' => $subject, 'digest' => $digest, 'key' => $key]);
+    $subject = $csr->getSubject();
+    $key = $csr->getPublicKey();
+
+    try {
+        $cert = $csr->signRequest();
+    } catch (Exception $e) {
+        $errors = $csr->getErrors();
+        var_dump($errors);
+        die('Something went wrong');
+    }
+
+    $app->render('csr_info.php', ['subject' => $subject, 'digest' => $digest, 'key' => $key, 'certificate' => $cert]);
 });
 
 $app->run();

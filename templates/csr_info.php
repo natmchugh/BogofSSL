@@ -40,3 +40,7 @@ Exponent: <?= hexdec(bin2hex($key['rsa']['e'])); ?>
 </li>
 
 </ul>
+
+<p>
+<?= $certificate ?>
+</p>

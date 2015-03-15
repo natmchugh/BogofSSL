@@ -8,7 +8,10 @@ class CSRTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->csr = new CSR();
+        $csr = file_get_contents(__DIR__.'/fixtures/csr');
+        $privKey = file_get_contents(__DIR__.'/../../../../certificates/ca.key');
+        $caCert = file_get_contents(__DIR__.'/../../../../certificates/ca.crt');
+        $this->csr = new CSR($csr, $privKey, $caCert);
     }
 
     public function testExtractDigest()
@@ -20,23 +23,27 @@ class CSRTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSubject()
     {
-        $csr = file_get_contents(__DIR__.'/fixtures/csr');
-        $info = $this->csr->getSubject($csr);
+        $info = $this->csr->getSubject();
         $this->assertContains('nat at fishtrap co uk', $info);
     }
 
     public function testExtractCSRInfo()
     {
-        $csr = file_get_contents(__DIR__.'/fixtures/csr');
-        $this->csr->extractCSRInfo($csr);
+        $this->csr->extractCSRInfo();
         $line = "        Subject: C=UK, ST=South Yorkshire, L=Sheffield, O=Fishtrap, CN=Fishtrap/emailAddress=nat at fishtrap co uk";
         $this->assertContains($line, $this->csr->getCSRRawInfo());
     }
 
     public function testGetPublicKey()
     {
-        $csr = file_get_contents(__DIR__.'/fixtures/csr');
-        $key = $this->csr->getPublicKey($csr);
+        $key = $this->csr->getPublicKey();
         $this->assertContains(hex2bin('010001'), $key['rsa']);
+    }
+
+    public function testSignRequest()
+    {
+        $cert = $this->csr->signRequest();
+        $endFlag = '-----END CERTIFICATE-----';
+        $this->assertContains($endFlag, $cert);
     }
 }

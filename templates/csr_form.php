@@ -1,36 +1,45 @@
 <html>
+<head>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+</head>
+    <body role="document">
+        <div class="container theme-showcase" role="main">
 
-    <h1>BOGOF SSL</h1>
-    <h2>Buy One, Get One Free!</h2>
-    <p>
-    Our certificates are 99.9%<super>&#42;</super> untrusted by all major (and minor) browsers.
-    </p>
+            <div class="jumbotron">
+                <h1>BOGOF SSL</h1>
+                <img src="/bogof.jpg">
+                <h2>Buy One, Get One Free!</h2>
+                <p>
+                Our certificates are 99.9%<super>&#42;</super> untrusted by all major (and minor) browsers.
+                </p>
 
-    <p>
-        We use the tried and trusted digest algorithms MD5 and MD4 only.
-    </p>
+                <p>
+                    We use the tried and trusted digest algorithms MD5 and MD4 only.
+                </p>
 
-    <p>
-        Feel free to put this padloack all over your site it means very little.
-    </p>
+                <p>
+                    Feel free to put &#x1f512; this padloack all over your site it means very little.
+                </p>
 
-    <p>
-        You will need to create a Certicfcate Signing Request and for that will need openssl installed.
+                <p>
+                    You will need to create a Certificate Signing Request and for that will need openssl installed.
 
-    </p>
+                </p>
+            </div>
+        <form method="POST" action="/csr_info">
 
-    <form method="POST" action="/csr_info">
+        <label>Paste your Certificate Signing Request (.csr) file</label>
 
-    <label>Paste your Certificate Signing Request (.csr) file</label>
+        <p>
+        <textarea name="csr" rows="30" cols="100"><?php if(isset($_POST['csr'])) echo $_POST['csr']; ?></textarea>
+        </p>
 
-    <p>
-    <textarea name="csr" rows="30" cols="100"><?php if(isset($_POST['csr'])) echo $_POST['csr']; ?></textarea>
-    </p>
+        <input type="submit" class="btn btn-lg btn-primary">
+        </form>
 
-    <input type="submit" >
-    </form>
-
-    <super>&#42;</super>&#177;0.1%
-
-
+        <super>&#42;</super>&#177;0.1%
+    </div>
+    </body>
 </html>

@@ -8,11 +8,24 @@ class CSR
 
     private $csrinfo;
 
-    public function extractCSRInfo($csr)
+    private $privkey;
+
+    private $iacert;
+
+    private $csrASN1;
+
+    public function __construct($csr, $privkey, $iacert)
+    {
+        $this->csrASN1 = $csr;
+        $this->privkey = $privkey;
+        $this->iacert = $iacert;
+    }
+
+    public function extractCSRInfo()
     {
         $tmpfname = tempnam("/tmp", 'csr.');
         $handle = fopen($tmpfname, "w");
-        fwrite($handle, $csr);
+        fwrite($handle, $this->csrASN1);
         fclose($handle);
 
         $escaped_command = escapeshellcmd("openssl req -in $tmpfname -noout -text");
@@ -29,19 +42,41 @@ class CSR
       
     }
 
+    public function signRequest()
+    {
+        $config = [
+            'digest_alg' => 'md5',
+            'x509_extensions' => 'v3_req',
+            'private_key_type' => OPENSSL_KEYTYPE_RSA,
+            "encrypt_key" => false,
+        ];
+        $usercert = openssl_csr_sign($this->csrASN1, $this->iacert, $this->privkey, 365, $config, 1);
+        openssl_x509_export($usercert, $certout);
+        return $certout;
+    }
+
     public function getCSRRawInfo()
     {
         return $this->csrinfo;
     }
 
-    public function getSubject($csr)
+    public function getSubject()
     {
-        return openssl_csr_get_subject($csr, false);
+        return openssl_csr_get_subject($this->csrASN1, false);
     }
 
-    public function getPublicKey($csr)
+    public function getPublicKey()
     {
-        $pubKey = openssl_csr_get_public_key($csr);
+        $pubKey = openssl_csr_get_public_key($this->csrASN1);
         return openssl_pkey_get_details($pubKey);
+    }
+
+    public function getErrors()
+    {
+        $errors = [];
+        while (($e = openssl_error_string()) !== false) {
+            $errors[] = $e;
+        }
+        return $errors;
     }
 }
