@@ -1,15 +1,12 @@
 <html>
-<head>
-    <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-</head>
+<?php include(__DIR__.'/includes/head.php') ?>
     <body role="document">
         <div class="container theme-showcase" role="main">
 
             <div class="jumbotron">
-                <h1>BOGOF SSL</h1>
+                <h1>BOGOF SSL
                 <img src="/bogof.jpg">
+                </h1>
                 <h2>Buy One, Get One Free!</h2>
                 <p>
                 Our certificates are 99.9%<super>&#42;</super> untrusted by all major (and minor) browsers.
