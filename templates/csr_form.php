@@ -5,7 +5,6 @@
 
             <div class="jumbotron">
                 <h1>BOGOF SSL
-                <img src="/bogof.jpg">
                 </h1>
                 <h2>Buy One, Get One Free!</h2>
                 <p>
@@ -17,7 +16,7 @@
                 </p>
 
                 <p>
-                    Feel free to put &#x1f512; this padloack all over your site it means very little.
+                    Feel free to put &#x1f512; this padlock all over your site it means very little.
                 </p>
 
                 <p>

@@ -50,7 +50,8 @@ class CSR
             'private_key_type' => OPENSSL_KEYTYPE_RSA,
             "encrypt_key" => false,
         ];
-        $usercert = openssl_csr_sign($this->csrASN1, $this->iacert, $this->privkey, 365, $config, 1);
+        $serialNumber = $this->getNewSerialNumber();
+        $usercert = openssl_csr_sign($this->csrASN1, $this->iacert, $this->privkey, 365, $config, $serialNumber);
         openssl_x509_export($usercert, $certout);
         return $certout;
     }
@@ -78,5 +79,11 @@ class CSR
             $errors[] = $e;
         }
         return $errors;
+    }
+
+    public function getNewSerialNumber()
+    {
+        mt_srand(time());
+        return mt_rand();
     }
 }

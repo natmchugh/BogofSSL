@@ -46,4 +46,10 @@ class CSRTest extends \PHPUnit_Framework_TestCase
         $endFlag = '-----END CERTIFICATE-----';
         $this->assertContains($endFlag, $cert);
     }
+
+    public function testGetNewSerialNuber()
+    {
+        $serialNumber = $this->csr->getNewSerialNumber();
+        $this->assertTrue(is_int($serialNumber));
+    }
 }
