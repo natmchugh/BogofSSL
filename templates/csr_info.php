@@ -29,7 +29,7 @@
             </li>
 
             <li>
-            Email Address: <?= $subject['emailAddress'] ?>
+            Email Address: <?= !empty($subject['emailAddress']) ? $subject['emailAddress'] : '' ?>
             </li>
 
             <li>

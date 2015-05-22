@@ -58,7 +58,7 @@ $app->post('/csr_info', function () use ($app, $iaKey, $iaCert) {
         $cert = $csr->signRequest();
     } catch (Exception $e) {
         $errors = $csr->getErrors();
-        var_dump($errors);
+        error_log($errors);
         die('Something went wrong');
     }
 
