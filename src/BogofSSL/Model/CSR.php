@@ -53,6 +53,9 @@ class CSR
         $serialNumber = $this->getNewSerialNumber();
         $usercert = openssl_csr_sign($this->csrASN1, $this->iacert, $this->privkey, 365, $config, $serialNumber);
         openssl_x509_export($usercert, $certout);
+        $filename = tempnam(__DIR__.'/../signatures/', 'csr');
+        $csr = ['certout' => $certout, 'csr' => $this->csrASN1]; 
+        file_put_contents($filename, json_encode($csr));
         return $certout;
     }
 
